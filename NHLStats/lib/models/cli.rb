@@ -12,8 +12,7 @@ class NHLStats::CLI
   end
 
   def start
-    input = gets.strip
-    puts "#{input}"
+    NHLStats::Scraper.new.get_page
   end
 
 
