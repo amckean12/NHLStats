@@ -13,12 +13,9 @@ class NHLStats::CLI
 
   def start
     input = nil
-    while input != "End"
-      input = gets.strip
-      NHLStats::Stats.new.player_lookup if input == "Player"
-      NHLStats::Stats.new.team_lookup if input == "Team"
-      call
-    end
+    input = gets.strip
+    NHLStats::Stats.new.player_lookup if input == "Player" if input == "Player"
+    NHLStats::Stats.new.team_lookup if input == "Team" if input == "Team"
   end
 
 end

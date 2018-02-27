@@ -1,7 +1,14 @@
 class NHLStats::Scraper
 
+  attr_accessor :stats
+
+  def run(input)
+    @stats = []
+    team_stats_info if input == "blues"
+    player_stats_info if input == "tarasenko"
+  end
+
   def get_page
-    stats = []
     page = Nokogiri::HTML(open("https://www.hockey-reference.com/leagues/NHL_2018_skaters.html"))
     page_table = page.css('.stats_table')
     page_table.css("table tr").each do |player|
@@ -20,9 +27,21 @@ class NHLStats::Scraper
       player_blocks = player.css(".right").css("[data-stat = 'blocks']").text
       player_hits = player.css(".right").css("[data-stat = 'hits']").text
       player_faceoff_percentage = player.css(".right").css("[data-stat = 'faceoff_percentage']").text
-      stats << {player: hockey_player, age: player_age, position: player_position, team: player_team, games_played: player_games_played, goals: player_goals, assists: player_assists, points: player_points, shooting_percentage: player_shooting_percentage, plus_minus: player_plus_minus, penalty_minutes: player_penalty_minutes, TOI_Avg: player_toi_avg, blocks: player_blocks, hits: player_hits, faceoff_percentage: player_faceoff_percentage}
+      @stats << {player: hockey_player, age: player_age, position: player_position, team: player_team, games_played: player_games_played, goals: player_goals, assists: player_assists, points: player_points, shooting_percentage: player_shooting_percentage, plus_minus: player_plus_minus, penalty_minutes: player_penalty_minutes, TOI_Avg: player_toi_avg, blocks: player_blocks, hits: player_hits, faceoff_percentage: player_faceoff_percentage}
     end
-    stats
-    puts "#{stats}"
+    @stats
   end
+
+  def team_stats_info
+    get_page
+    @stats.each do |team|
+      if team[:team] == "STL"
+        puts "#{team[:player]}"
+      end
+    end
+  end
+
+  def player_stats_info
+  end
+
 end
