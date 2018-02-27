@@ -4,8 +4,8 @@ class NHLStats::Scraper
 
   def run(input)
     @stats = []
-    team_stats_info if input == "blues"
-    player_stats_info if input == "tarasenko"
+    if input == "blues" then team_stats_info else player_stats_info end
+
   end
 
   def get_page
@@ -36,7 +36,19 @@ class NHLStats::Scraper
     get_page
     @stats.each do |team|
       if team[:team] == "STL"
-        puts "#{team[:player]}"
+        puts "_____________________________________________"
+        puts "#{team[:player]} Age:#{team[:age]} Position:#{team[:position]}"
+        puts "Games Played: #{team[:games_played]}"
+        puts "Goals: #{team[:goals]}"
+        puts "Assists: #{team[:assists]}"
+        puts "Points: #{team[:points]}"
+        puts "Shooting Percentage: #{team[:shooting_percentage]}"
+        puts "Plus Minus: #{team[:plus_minus]}"
+        puts "Penalty Minutes: #{team[:penalty_minutes]}"
+        puts "Average TOI: #{team[:TOI_Avg]}"
+        puts "Blocks: #{team[:blocks]}"
+        puts "Hits: #{team[:hits]}"
+        puts "Faceoff Percentage: #{team[:faceoff_percentage]}"
       end
     end
   end
