@@ -1,11 +1,11 @@
 class NHLStats::Scraper
 
-  attr_accessor :stats
+  attr_accessor :stats, :team
 
   def run(input)
     @stats = []
-    if input == "blues" then team_stats_info else player_stats_info end
-
+    @team = input
+    team_stats_info
   end
 
   def get_page
@@ -35,7 +35,7 @@ class NHLStats::Scraper
   def team_stats_info
     get_page
     @stats.each do |team|
-      if team[:team] == "STL"
+      if team[:team] == @team
         puts "_____________________________________________"
         puts "#{team[:player]} Age:#{team[:age]} Position:#{team[:position]}"
         puts "Games Played: #{team[:games_played]}"
@@ -53,25 +53,6 @@ class NHLStats::Scraper
     end
   end
 
-  def player_stats_info
-    get_page
-    @stats.each do |player|
-      if player[:player] == "Vladimir Tarasenko"
-        puts "_____________________________________________"
-        puts "#{player[:player]} Age:#{player[:age]} Position:#{player[:position]}"
-        puts "Games Played: #{player[:games_played]}"
-        puts "Goals: #{player[:goals]}"
-        puts "Assists: #{player[:assists]}"
-        puts "Points: #{player[:points]}"
-        puts "Shooting Percentage: #{player[:shooting_percentage]}"
-        puts "Plus Minus: #{player[:plus_minus]}"
-        puts "Penalty Minutes: #{player[:penalty_minutes]}"
-        puts "Average TOI: #{player[:TOI_Avg]}"
-        puts "Blocks: #{player[:blocks]}"
-        puts "Hits: #{player[:hits]}"
-        puts "Faceoff Percentage: #{player[:faceoff_percentage]}"
-      end
-    end
-  end
+
 
 end
