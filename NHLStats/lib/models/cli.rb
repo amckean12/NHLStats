@@ -3,7 +3,7 @@ class NHLStats::CLI
     puts "Welcome to NHL Stats"
     puts "A Simple tool to pull NHL stats quickly"
     puts "_____________________________________________"
-    puts "Type Team to pull up all of the Available Teams"
+    puts "Type Teams to display the current NHL Teams"
     puts "Type End to exit the program."
     puts "_____________________________________________"
     puts "Input Here:"
@@ -13,7 +13,8 @@ class NHLStats::CLI
   def start
     input = nil
     input = gets.strip
-    NHLStats::Stats.new.team_lookup if input == "Team" if input == "Team"
+    NHLStats::Stats.new.team_lookup if input == "Teams"
+    abort if input == "End"
   end
 
 end
