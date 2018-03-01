@@ -8,6 +8,7 @@ class NHLStats::Scraper
     team_stats_info
   end
 
+#scrapes the website 
   def get_page
     page = Nokogiri::HTML(open("https://www.hockey-reference.com/leagues/NHL_2018_skaters.html"))
     page_table = page.css('.stats_table')
@@ -32,6 +33,7 @@ class NHLStats::Scraper
     @stats
   end
 
+#list each players stats based on the team.
   def team_stats_info
     get_page
     @stats.each do |team|
