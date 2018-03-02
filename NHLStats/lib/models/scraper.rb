@@ -1,14 +1,17 @@
 class NHLStats::Scraper
 
-  attr_accessor :stats, :team
+  attr_accessor :stats, :team, :team_players, :input_player
 
   def run(input)
+    @team_players = []
     @stats = []
     @team = input
-    team_stats_info
+    @input_player = nil
+    team_players
+    player_pick
   end
 
-#scrapes the website 
+#scrapes the website
   def get_page
     page = Nokogiri::HTML(open("https://www.hockey-reference.com/leagues/NHL_2018_skaters.html"))
     page_table = page.css('.stats_table')
@@ -33,11 +36,38 @@ class NHLStats::Scraper
     @stats
   end
 
-#list each players stats based on the team.
-  def team_stats_info
+  def team_players
     get_page
     @stats.each do |team|
       if team[:team] == @team
+        puts "#{team[:player]}"
+        player = team[:player]
+        @team_players << player
+      end
+    end
+    puts "____________________________________________________________________"
+  end
+
+  def player_pick
+    puts "Which Player would you like to get stats for?"
+    @input_player = gets.strip
+    @team_players.include?(@input_player) ? player_stats_info : player_error
+  end
+
+  def player_error
+    puts "____________________________________________________________________"
+    puts "********I'm Sorry you may have mispelled the players name.**********"
+    puts "*******Please check the above list to ensure correct spelling.******"
+    puts "____________________________________________________________________"
+    player_pick
+  end
+
+
+
+#list each players stats based on the team.
+  def player_stats_info
+    @stats.each do |team|
+      if team[:player] == @input_player
         puts "_____________________________________________"
         puts "#{team[:player]} Age:#{team[:age]} Position:#{team[:position]}"
         puts "Games Played: #{team[:games_played]}"
@@ -53,8 +83,18 @@ class NHLStats::Scraper
         puts "Faceoff Percentage: #{team[:faceoff_percentage]}"
       end
     end
+    another_player?
   end
 
+  def another_player?
+    puts "Would You Like to lookup another player? (Yes or No)"
+    input = gets.strip
+    input == "Yes" || input == "yes" ? player_pick : bridge_method
+  end
+
+  def bridge_method
+      puts "____________________________________________________________________"
+  end
 
 
 end
