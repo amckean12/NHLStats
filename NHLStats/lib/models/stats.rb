@@ -9,7 +9,6 @@ class NHLStats::Stats
   end
 
   def check_status
-    puts "____________________________________________________________________"
     puts "Would you like to Lookup another Team? (Yes to Continue No to Exit)"
     input = gets.strip
     input == "Yes" || input == "yes" ? NHLStats::CLI.new.call : abort

@@ -57,6 +57,7 @@ class NHLStats::Scraper
   def player_error
     puts "____________________________________________________________________"
     puts "********I'm Sorry you may have mispelled the players name.**********"
+    puts "****************Or picked a player that is not on #{@team}***************"
     puts "*******Please check the above list to ensure correct spelling.******"
     puts "____________________________________________________________________"
     player_pick
@@ -68,7 +69,7 @@ class NHLStats::Scraper
   def player_stats_info
     @stats.each do |team|
       if team[:player] == @input_player
-        puts "_____________________________________________"
+        puts "____________________________________________________________________"
         puts "#{team[:player]} Age:#{team[:age]} Position:#{team[:position]}"
         puts "Games Played: #{team[:games_played]}"
         puts "Goals: #{team[:goals]}"
@@ -81,6 +82,7 @@ class NHLStats::Scraper
         puts "Blocks: #{team[:blocks]}"
         puts "Hits: #{team[:hits]}"
         puts "Faceoff Percentage: #{team[:faceoff_percentage]}"
+        puts "____________________________________________________________________"
       end
     end
     another_player?
