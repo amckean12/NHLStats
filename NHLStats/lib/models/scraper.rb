@@ -63,14 +63,14 @@ class NHLStats::Scraper
     player_pick
   end
 
-
-
+  
 #list each players stats based on the team.
   def player_stats_info
     @stats.each do |team|
       if team[:player] == @input_player
         puts "____________________________________________________________________"
         puts "#{team[:player]} Age:#{team[:age]} Position:#{team[:position]}"
+        puts "Team:#{team[:team]}" 
         puts "Games Played: #{team[:games_played]}"
         puts "Goals: #{team[:goals]}"
         puts "Assists: #{team[:assists]}"
