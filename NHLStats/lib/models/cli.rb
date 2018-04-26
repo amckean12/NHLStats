@@ -51,7 +51,7 @@ class NHLStats::CLI
   def get_player
     puts "Which Player would you like to get stats for?"
     @input = gets.strip
-    unless @input.upcase == "NO"
+    while @input.upcase != "NO" 
       @scraper.display_results(@input)
       puts "To Select another Player Type that Players name if not type no."
       @input = gets.strip
