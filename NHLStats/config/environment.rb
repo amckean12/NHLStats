@@ -6,4 +6,5 @@ require 'open-uri'
 #Models
 require_relative "../lib/models/cli.rb"
 require_relative "../lib/models/scraper.rb"
-require_relative "../lib/models/stats.rb"
+require_relative "../lib/models/player.rb"
+require_relative "../lib/models/team.rb"
