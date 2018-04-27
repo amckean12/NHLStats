@@ -14,8 +14,13 @@ class NHLStats::CLI
     @input = gets.strip.upcase
     if @input != "END" && valid_team? == true
       puts "Loading Your Results ...."
-      @scraper = HockeyScraper.new(@input)
-      @scraper.scrape_page
+      if team = Team.find_by_abbr(@input)
+        # just show that team
+        display_player_names(team) #Build
+      else
+        @scraper = HockeyScraper.new(@input)
+        display_player_names(@scraper.scrape_page)
+      end
       get_player
     elsif valid_team? == false && @input != "END"
       puts "I'm Sorry You may have entered and incorrect Team Code."
@@ -24,6 +29,10 @@ class NHLStats::CLI
     elsif @input.upcase == "END"
       abort
     end
+  end
+
+  def display_player_names(team)
+    team.players.each {|player| puts player.player}
   end
 
   def initial_welcome
@@ -51,11 +60,7 @@ class NHLStats::CLI
   def get_player
     puts "Which Player would you like to get stats for?"
     @input = gets.strip
-    while @input.upcase != "NO" 
-      @scraper.display_results(@input)
-      puts "To Select another Player Type that Players name if not type no."
-      @input = gets.strip
-    end
+    show_player(@input)
     another_team?
   end
 
@@ -76,6 +81,26 @@ class NHLStats::CLI
     else
       another_team?
     end
+  end
+
+  # once we've received the input for a player's name
+  def show_player(name)
+    player = Player.find_by_name(name)
+      puts "____________________________________________________________________"
+        puts "#{player.player} Age:#{player.age} Position:#{player.position}"
+        puts "Team:#{player.team}"
+        puts "Games Played: #{player.games_played}"
+        puts "Goals: #{player.goals}"
+        puts "Assists: #{player.assists}"
+        puts "Points: #{player.points}"
+        puts "Shooting Percentage: #{player.shooting_percentage}"
+        puts "Plus Minus: #{player.plus_minus}"
+        puts "Penalty Minutes: #{player.penalty_minutes}"
+        puts "Average TOI: #{player.toi_avg}"
+        puts "Blocks: #{player.blocks}"
+        puts "Hits: #{player.hits}"
+        puts "Faceoff Percentage: #{player.faceoff_percentage}"
+        puts "____________________________________________________________________"
   end
 
 end

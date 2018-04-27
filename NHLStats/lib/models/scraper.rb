@@ -4,7 +4,7 @@ class HockeyScraper
 
   def initialize(input)
     @input_team = input
-    @team = Team.new
+    @team = Team.new(@input_team)
     @page = Nokogiri::HTML(open("https://www.hockey-reference.com/leagues/NHL_2018_skaters.html"))
   end
 
@@ -29,6 +29,7 @@ class HockeyScraper
         @player_hash = {player: hockey_player, age: player_age, position: player_position, team: player_team, games_played: player_games_played, goals: player_goals, assists: player_assists, points: player_points, shooting_percentage: player_shooting_percentage, plus_minus: player_plus_minus, penalty_minutes: player_penalty_minutes, TOI_Avg: player_toi_avg, blocks: player_blocks, hits: player_hits, faceoff_percentage: player_faceoff_percentage}
         @team.add_player(@player_hash) unless @player_hash[:team] != @input_team
       end
+      @team
     end
 
     def display_results(input)

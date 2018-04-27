@@ -1,17 +1,30 @@
 class Team
-  attr_accessor :players, :player_input
+  attr_accessor :players, :abbr
 
-  def initialize
+
+  @@all = []
+
+  def initialize(team_abbr)
     @players = []
+    @abbr = team_abbr
   end
 
+  def self.all
+    @@all
+  end
+
+  def self.find_by_abbr(input)
+    all.detect {|team| team.abbr == input}
+  end
+
+
   def add_player(player_hash)
-    @players << player_hash
-    puts "#{player_hash[:player]}"
+    player = Player.new(player_hash)
+    @players << player
   end
 
   def get_players_stats(input)
-    @player_input = input
+    player_input = input
     if @players.find {|p| p[:player] == @player_input} == nil
       puts "____________________________________________________________________"
       puts "********I'm Sorry you may have mispelled the players name.**********"
