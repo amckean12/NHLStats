@@ -31,10 +31,4 @@ class HockeyScraper
       end
       @team
     end
-
-    def display_results(input)
-      @player_input = input
-      @team.get_players_stats(@player_input)
-    end
-
 end

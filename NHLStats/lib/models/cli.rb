@@ -14,9 +14,8 @@ class NHLStats::CLI
     @input = gets.strip.upcase
     if @input != "END" && valid_team? == true
       puts "Loading Your Results ...."
-      if team = Team.find_by_abbr(@input)
-        # just show that team
-        display_player_names(team) #Build
+      if  team = Team.find_by_abbr(@input)
+        display_player_names(team)
       else
         @scraper = HockeyScraper.new(@input)
         display_player_names(@scraper.scrape_page)
@@ -58,9 +57,13 @@ class NHLStats::CLI
   end
 
   def get_player
-    puts "Which Player would you like to get stats for?"
-    @input = gets.strip
-    show_player(@input)
+    until @input == "NO"
+      puts "Which Player would you like to get stats for?"
+      @input = gets.strip
+      show_player(@input)
+      puts "Would you like to view another Player? (Yes or No)"
+      @input = gets.strip.upcase
+    end
     another_team?
   end
 
@@ -85,7 +88,7 @@ class NHLStats::CLI
 
   # once we've received the input for a player's name
   def show_player(name)
-    player = Player.find_by_name(name)
+    if player = Player.find_by_name(name)
       puts "____________________________________________________________________"
         puts "#{player.player} Age:#{player.age} Position:#{player.position}"
         puts "Team:#{player.team}"
@@ -101,6 +104,19 @@ class NHLStats::CLI
         puts "Hits: #{player.hits}"
         puts "Faceoff Percentage: #{player.faceoff_percentage}"
         puts "____________________________________________________________________"
+    else
+      raise_player_error
+    end
   end
+
+  def raise_player_error
+    puts "____________________________________________________________________"
+    puts "********I'm Sorry you may have mispelled the players name.**********"
+    puts "****************Or picked a player that is not on the Team.*********"
+    puts "*******Please check the above list to ensure correct spelling.******"
+    puts "____________________________________________________________________"
+    get_player
+  end
+
 
 end
