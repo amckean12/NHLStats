@@ -1,13 +1,12 @@
 class Team
   attr_accessor :players, :abbr
 
-
   @@all = []
 
   def initialize(team_abbr)
     @players = []
     @abbr = team_abbr
-    @@all << @players
+    @@all << self
   end
 
   def self.all

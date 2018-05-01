@@ -1,5 +1,4 @@
 class NHLStats::CLI
-
   attr_accessor :input
 
   TEAM_ABR_ARRAY = ["ANA", "ARI", "BOS", "BUF", "CAR", "CBJ", "CGY", "CHI", "COL", "DAL", "DET", "EDM", "FLA", "LAK", "MIN", "MTL", "NJD", "NSH", "NYI", "NYR", "OTT", "PHI", "PIT", "SJS", "STL", "TBL", "TOR", "VAN", "VEG", "WPG", "WSH"]
@@ -10,24 +9,29 @@ class NHLStats::CLI
     start
   end
 
+  def check_end_of_program(input)
+    abort if input.upcase == "END" || input.upcase == "NO"
+  end
+
+  #Run's the program (There is an exit point at the end of this method)
   def start
     @input = gets.strip.upcase
-    if @input != "END" && valid_team? == true
+    while valid_team?(@input) == true
       puts "Loading Your Results ...."
       if  team = Team.find_by_abbr(@input)
         display_player_names(team)
       else
+        #If the team obj is not present in the @@all team array for this session then we scrape the site to get those team's players
         @scraper = HockeyScraper.new(@input)
         display_player_names(@scraper.scrape_page)
       end
       get_player
-    elsif valid_team? == false && @input != "END"
-      puts "I'm Sorry You may have entered and incorrect Team Code."
-      puts "Please Try Again"
-      call
-    elsif @input.upcase == "END"
-      abort
     end
+    check_end_of_program(@input)
+    #Occurs when user enters in an incorreect team code
+    puts "I'm Sorry You may have entered and incorrect Team Code."
+    puts "Please Try Again"
+    call
   end
 
   def display_player_names(team)
@@ -68,22 +72,19 @@ class NHLStats::CLI
   end
 
 
-  def valid_team?
-    TEAM_ABR_ARRAY.include?(@input) ? true : false
+  def valid_team?(team_input)
+    TEAM_ABR_ARRAY.include?(team_input) ? true : false
   end
 
+  #An exit point for the program is in this method
   def another_team?
     puts "Would you Like to view another Team's Players?(Yes or No to Exit)"
-    @input = gets.strip
-    if @input.upcase == "YES"
-      puts "Which team Would you Like to view?"
-      list_teams
-      start
-    elsif @input.upcase == "NO"
-      abort
-    else
-      another_team?
-    end
+    another_team_input = gets.strip.upcase
+    check_end_of_program(another_team_input)
+    puts "Which team Would you Like to view?"
+    list_teams
+    start
+    another_team?
   end
 
   # once we've received the input for a player's name
@@ -117,6 +118,5 @@ class NHLStats::CLI
     puts "____________________________________________________________________"
     get_player
   end
-
 
 end
